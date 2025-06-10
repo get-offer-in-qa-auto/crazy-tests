@@ -54,7 +54,7 @@ chmod +x calculate_averages.sh
 
 ```
 expenses-analyzer/
-├── calculate_averages.sh         # Скрипт с багами
+├── calculate_averages.sh
 ├── data/
 │   ├── transactions_1k.csv
 │   ├── transactions_100k.csv
