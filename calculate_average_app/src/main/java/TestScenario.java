@@ -1,66 +1,62 @@
-import steps.DataGenerator;
-import steps.ScriptRunner;
+import helpers.DataGenerator;
+import helpers.ResultAnalyser;
+import helpers.ScriptRunner;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestScenario {
-
     private DataGenerator dataGenerator;
     private ScriptRunner scriptRunner;
+    private ResultAnalyser resultAnalyser;
 
     public TestScenario() {
         this.dataGenerator = new DataGenerator();
         this.scriptRunner = new ScriptRunner();
+        this.resultAnalyser = new ResultAnalyser();
     }
 
-    // Метод given() для инициализации данных
     public TestScenario given() {
-        // Инициализация данных, но не выполнение действий
-        System.out.println("Initializing data...");
-        return this;  // Возвращаем объект для продолжения цепочки
+        System.out.println("Initializing data..");
+        return this;
     }
 
-    // Метод when() для выполнения действий (например, запуск скрипта)
-    public TestScenario whenExecuteScript(String inputFile) {
-        // Выполнение действий
-        System.out.println("Executing actions...");
-        scriptRunner.calculateAverageExitSuccessfully(inputFile);  // Запуск скрипта
-        return this;  // Возвращаем объект для продолжения цепочки
+    public TestScenario generateRecords(int num) {
+        dataGenerator.generateRecords(num);
+        return this;
     }
 
-    public TestScenario whenExecuteScript() {
-        // Выполнение действий
-        System.out.println("Executing actions...");
-        scriptRunner.calculateAverageExitSuccessfully();  // Запуск скрипта
-        return this;  // Возвращаем объект для продолжения цепочки
+    public TestScenario withRecord(String user, String date, String category, double amount) {
+        dataGenerator.withRecord( user,  date,  category,  amount);
+        return this;
     }
 
-    // Метод then() для проверки результатов
-    public TestScenario then() {
-        // Проверка результатов
-        System.out.println("Verifying results...");
-        return this;  // Возвращаем объект для продолжения цепочки
+    public TestScenario when() {
+        System.out.println("Executing actions..");
+        return this;
     }
 
-    // Метод для генерации данных
-    public TestScenario generateData(int numRows) {
-        dataGenerator.generateData(numRows);
-        return this;  // Возвращаем объект для продолжения цепочки
+    public TestScenario executeScript() {
+        scriptRunner.executeScript();
+        return this;
     }
 
-    // Метод для добавления данных
-    public TestScenario withData(String user, String date, double amount) {
-        dataGenerator.withData(user, date, amount);
-        return this;  // Возвращаем объект для продолжения цепочки
+    public TestScenario executeScript(String filePath) {
+        scriptRunner.executeScript(filePath);
+        return this;
     }
 
-    // Метод для проверки результата
-    public TestScenario contains(String user, String month, double expectedAverage) {
-        scriptRunner.contains(user, month, expectedAverage);
-        return this;  // Возвращаем объект для продолжения цепочки
+    public  TestScenario then() {
+        System.out.println("Check results..");
+        return this;
     }
 
-    // Метод для проверки ошибки
-    public TestScenario containsError(String expectedError) {
-        scriptRunner.containsError(expectedError);  // Проверяем, что ошибка присутствует в выводе
-        return this;  // Возвращаем объект для продолжения цепочки
+    public TestScenario containsRecord(String user, String month, double averageAmount) {
+        resultAnalyser.containsRecord(user, month, averageAmount);
+        return this;
+    }
+
+    public TestScenario containsError(String error) {
+        assertEquals(error, scriptRunner.getErrorMessage().replace("\n", ""));
+        return this;
     }
 }
