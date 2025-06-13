@@ -19,9 +19,7 @@ awk -F',' 'NR > 1 { sum[$1] += $4; count[$1] += 1 } END {
 
 LINE_COUNT=$(wc -l < "$INPUT_FILE")
 if [[ "$LINE_COUNT" -gt 100000 ]]; then
-  echo "⏳ Большой файл — эмуляция долгой обработки..."
-  sleep 6  # Нарушение нефункционального требования
-fi
+  sleep 6
 
 grep -E '[0-9]{4}-[0-9]{2}-[0-9]{2}' "$INPUT_FILE" > /dev/null
 if [[ $? -ne 0 ]]; then
